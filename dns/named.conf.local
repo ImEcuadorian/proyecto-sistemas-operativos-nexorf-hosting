@@ -1,0 +1,4 @@
+zone "nexorf.com" {
+    type master;
+    file "/etc/bind/db.nexorf.com";
+};

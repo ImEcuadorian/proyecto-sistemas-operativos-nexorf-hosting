@@ -1,0 +1,112 @@
+services:
+
+  dns:
+    image: ubuntu/bind9
+    container_name: nexorf-dns
+    volumes:
+      - ./dns:/etc/bind
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    restart: always
+    networks:
+      - nexorf-net
+
+  panel:
+    build: ./panel
+    container_name: nexorf-panel
+    ports:
+      - "3001:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - nexorf-net
+
+  mail:
+    image: mailserver/docker-mailserver:15.1.0
+    container_name: nexorf-mail
+    hostname: mail
+    domainname: nexorf.com
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "465:465"
+    environment:
+      - ENABLE_IMAP=1
+      - ENABLE_POP3=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_FAIL2BAN=0
+    restart: always
+    networks:
+      - nexorf-net
+
+  hosting:
+    image: nginx:alpine
+    container_name: nexorf-hosting
+    ports:
+      - "80:80"
+    volumes:
+      - ./hosting/sites:/var/www
+      - ./hosting/nginx:/etc/nginx/conf.d
+      - ./hosting/scripts:/scripts
+    restart: always
+    networks:
+      - nexorf-net
+
+  php:
+    image: php:8.2-fpm
+    container_name: nexorf-php
+    volumes:
+      - ./hosting/sites:/var/www
+    restart: always
+    networks:
+      - nexorf-net
+
+  db:
+    image: mariadb:11
+    container_name: nexorf-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./hosting/db:/var/lib/mysql
+    restart: always
+    networks:
+      - nexorf-net
+
+  ftp:
+    image: stilliard/pure-ftpd:hardened
+    container_name: nexorf-ftp
+    environment:
+      PUBLICHOST: "ftp.nexorf.com"
+      FTP_USER_NAME: admin
+      FTP_USER_PASS: root
+      FTP_USER_HOME: /home/ftpusers/admin
+    volumes:
+      - ./hosting/sites:/home/ftpusers
+      - ./ftp:/etc/pure-ftpd
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    restart: always
+    networks:
+      - nexorf-net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: nexorf-phpmyadmin
+    environment:
+      PMA_HOST: nexorf-db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    restart: always
+    networks:
+      - nexorf-net
+
+
+
+networks:
+  nexorf-net:
+    driver: bridge

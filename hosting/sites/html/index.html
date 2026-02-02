@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nexorf Hosting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./tailwind.css">
+</head>
+
+<body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white">
+
+<!-- HERO -->
+<section class="min-h-screen flex items-center justify-center px-6">
+  <div class="max-w-6xl text-center">
+    <h1 class="text-6xl md:text-7xl font-extrabold tracking-tight mb-6">
+      🚀 Nexorf Hosting
+    </h1>
+
+    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+      Plataforma de <span class="text-indigo-400 font-semibold">hosting interno automatizado</span>,
+      diseñada para gestión de servicios web, DNS, FTP y bases de datos en entornos educativos y empresariales.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#servicios"
+         class="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition text-lg font-semibold shadow-xl">
+        Ver servicios
+      </a>
+      <a href="#arquitectura"
+         class="px-8 py-4 rounded-xl border border-indigo-400 hover:bg-indigo-400/10 transition text-lg">
+        Arquitectura del sistema
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="py-24 px-6 bg-black/30">
+  <div class="max-w-7xl mx-auto">
+
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
+      🔧 Servicios Disponibles
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">🌐 Hosting Web</h3>
+        <p class="text-gray-300">
+          Creación automática de sitios web por usuario, con dominios personalizados
+          y soporte para HTML y PHP mediante Nginx + PHP-FPM.
+        </p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">📁 FTP Seguro</h3>
+        <p class="text-gray-300">
+          Acceso FTP independiente por usuario para subir archivos,
+          administrar contenido y desplegar aplicaciones web.
+        </p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">🧠 DNS Interno</h3>
+        <p class="text-gray-300">
+          Gestión de dominios internos mediante BIND9,
+          con resolución rápida dentro de la red local.
+        </p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">🗄 Base de Datos</h3>
+        <p class="text-gray-300">
+          MariaDB integrada para aplicaciones web,
+          preparada para escalar y gestionar múltiples proyectos.
+        </p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">📦 Docker</h3>
+        <p class="text-gray-300">
+          Infraestructura basada en contenedores Docker,
+          facilitando despliegue, aislamiento y mantenimiento.
+        </p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+        <h3 class="text-2xl font-bold mb-4">⚙ Panel de Control</h3>
+        <p class="text-gray-300">
+          Panel web para crear usuarios, generar hosting,
+          configurar DNS y entregar credenciales automáticamente.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITECTURA -->
+<section id="arquitectura" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto text-center">
+
+    <h2 class="text-4xl md:text-5xl font-bold mb-10">
+      🧩 Arquitectura del Sistema
+    </h2>
+
+    <p class="text-xl text-gray-300 mb-12">
+      Nexorf Hosting funciona sobre una arquitectura modular,
+      pensada para ambientes de laboratorio, prácticas académicas
+      y redes empresariales internas.
+    </p>
+
+    <div class="bg-white/10 p-10 rounded-3xl border border-white/10 text-left text-lg leading-relaxed shadow-xl">
+      <ul class="space-y-4 list-disc list-inside">
+        <li><b>Nginx</b> como servidor web principal</li>
+        <li><b>PHP-FPM</b> para procesamiento dinámico</li>
+        <li><b>MariaDB</b> para almacenamiento de datos</li>
+        <li><b>vsftpd</b> para transferencia de archivos</li>
+        <li><b>BIND9</b> como servidor DNS interno</li>
+        <li><b>Docker Compose</b> para orquestación</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-10 bg-black/40 text-center text-gray-400">
+  <p class="mb-2">
+    © 2026 <span class="text-white font-semibold">Nexorf Hosting</span>
+  </p>
+  <p class="text-sm">
+    Plataforma de hosting interno • Proyecto académico / empresarial
+  </p>
+</footer>
+
+</body>
+</html>
