@@ -1,137 +1,325 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Nexorf Hosting</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./tailwind.css">
+    <meta charset="UTF-8" />
+    <title>Nexorf - Network Systems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            /* Color Principal CIAN */
+            --neon-blue: #00d9ff;
+            --bg-dark: #020205;
+            --text-main: #ffffff;
+            --text-muted: #b0cce0;
+            --glass-bg: rgba(2, 10, 20, 0.7);
+            --glass-border: rgba(0, 217, 255, 0.3);
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: var(--bg-dark);
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* CANVAS DE FONDO INTERACTIVO */
+        #neural-canvas {
+            position: fixed; top: 0; left: 0; z-index: -1;
+        }
+
+        .container {
+            position: relative; z-index: 10; max-width: 1200px; margin: 0 auto;
+            padding: 20px; text-align: center;
+        }
+
+        /* Habilitar clicks en elementos interactivos */
+        .interactive { pointer-events: auto; }
+
+        section { padding: 80px 0; }
+
+        /* HERO */
+        .hero {
+            min-height: 90vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        /* --- LOGO MODIFICADO (MÁS GRANDE Y MÁS ABAJO) --- */
+        .logo-main {
+            height: 160px; /* Antes 120px, ahora más grande */
+            margin-top: 40px; /* Añadido para moverlo hacia abajo */
+            margin-bottom: 20px;
+            filter: hue-rotate(180deg) drop-shadow(0 0 30px var(--neon-blue));
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+        @keyframes floatLogo { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 5px;
+            background: linear-gradient(to bottom, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.5));
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            max-width: 800px;
+            margin: 25px auto;
+        }
+
+        /* BOTONES GLASS */
+        .btn-neural {
+            padding: 15px 45px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(0, 217, 255, 0.5); color: var(--neon-blue);
+            font-weight: bold; text-decoration: none; border-radius: 50px;
+            backdrop-filter: blur(5px); transition: 0.3s; display: inline-block;
+            margin: 10px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;
+        }
+        .btn-neural:hover {
+            background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue);
+        }
+
+        /* GRID DE SERVICIOS */
+        .section-title {
+            color: var(--neon-blue); font-size: 2.5rem; text-transform: uppercase;
+            margin-bottom: 60px; display: inline-block;
+            border-bottom: 3px solid var(--neon-blue); padding-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass-bg); border: 1px solid #004455; padding: 35px;
+            border-radius: 20px; text-align: left; transition: 0.4s;
+            backdrop-filter: blur(15px); position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--neon-blue); opacity: 0; transition: 0.3s;
+        }
+        .card:hover {
+            border-color: var(--neon-blue); transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0,217,255,0.1);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .card h3 {
+            color: #fff; margin-bottom: 15px; display: flex; align-items: center;
+            gap: 15px; font-size: 1.4rem; letter-spacing: 1px;
+        }
+        .card p {
+            color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin: 0;
+            text-align: justify;
+        }
+
+        .ico {
+            width: 28px; height: 28px; stroke: var(--neon-blue); fill: none;
+            stroke-width: 2; filter: drop-shadow(0 0 8px var(--neon-blue));
+        }
+
+        /* ARQUITECTURA */
+        .arch-box {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 40px; border-radius: 20px; text-align: left;
+            backdrop-filter: blur(15px);
+        }
+        .arch-list { list-style: none; padding: 0; display: grid; gap: 20px; }
+        .arch-list li { font-size: 1.1rem; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(0,217,255,0.1); padding-bottom: 10px; }
+        .arch-list li:last-child { border-bottom: none; }
+        .arch-dot { width: 10px; height: 10px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); flex-shrink: 0; }
+
+        strong { color: #fff; font-weight: 700; }
+
+        /* FOOTER */
+        footer {
+            margin-top: 120px; padding: 60px 20px; border-top: 1px solid rgba(0, 217, 255, 0.2);
+            background: #00050a; font-size: 0.95rem;
+        }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; margin-bottom: 40px; }
+        .footer-col h4 { color: var(--neon-blue); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .footer-col p { margin: 8px 0; color: #88aacc; display: flex; align-items: center; justify-content: center; gap: 10px;}
+        .footer-col a { color: #88aacc; text-decoration: none; transition: 0.3s; }
+        .footer-col a:hover { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+
+    </style>
 </head>
+<body>
+<canvas id="neural-canvas"></canvas>
 
-<body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white">
-
-<!-- HERO -->
-<section class="min-h-screen flex items-center justify-center px-6">
-  <div class="max-w-6xl text-center">
-    <h1 class="text-6xl md:text-7xl font-extrabold tracking-tight mb-6">
-      🚀 Nexorf Hosting
-    </h1>
-
-    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
-      Plataforma de <span class="text-indigo-400 font-semibold">hosting interno automatizado</span>,
-      diseñada para gestión de servicios web, DNS, FTP y bases de datos en entornos educativos y empresariales.
-    </p>
-
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="#servicios"
-         class="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition text-lg font-semibold shadow-xl">
-        Ver servicios
-      </a>
-      <a href="#arquitectura"
-         class="px-8 py-4 rounded-xl border border-indigo-400 hover:bg-indigo-400/10 transition text-lg">
-        Arquitectura del sistema
-      </a>
+<section class="hero container">
+    <div class="interactive">
+        <img src="./nexorf_1.png" alt="Nexorf" class="logo-main">
+        <h1>NEXORF</h1>
+        <p>Plataforma de hosting interno dinámico, gestionando servicios web, DNS y bases de datos con máxima eficiencia.</p>
+        <br>
+        <a href="#servicios" class="btn-neural">VER SERVICIOS</a>
+        <a href="#arquitectura" class="btn-neural">ARQUITECTURA</a>
     </div>
-  </div>
 </section>
 
-<!-- SERVICIOS -->
-<section id="servicios" class="py-24 px-6 bg-black/30">
-  <div class="max-w-7xl mx-auto">
-
-    <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">
-      🔧 Servicios Disponibles
-    </h2>
-
-    <div class="grid md:grid-cols-3 gap-10">
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">🌐 Hosting Web</h3>
-        <p class="text-gray-300">
-          Creación automática de sitios web por usuario, con dominios personalizados
-          y soporte para HTML y PHP mediante Nginx + PHP-FPM.
-        </p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">📁 FTP Seguro</h3>
-        <p class="text-gray-300">
-          Acceso FTP independiente por usuario para subir archivos,
-          administrar contenido y desplegar aplicaciones web.
-        </p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">🧠 DNS Interno</h3>
-        <p class="text-gray-300">
-          Gestión de dominios internos mediante BIND9,
-          con resolución rápida dentro de la red local.
-        </p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">🗄 Base de Datos</h3>
-        <p class="text-gray-300">
-          MariaDB integrada para aplicaciones web,
-          preparada para escalar y gestionar múltiples proyectos.
-        </p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">📦 Docker</h3>
-        <p class="text-gray-300">
-          Infraestructura basada en contenedores Docker,
-          facilitando despliegue, aislamiento y mantenimiento.
-        </p>
-      </div>
-
-      <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
-        <h3 class="text-2xl font-bold mb-4">⚙ Panel de Control</h3>
-        <p class="text-gray-300">
-          Panel web para crear usuarios, generar hosting,
-          configurar DNS y entregar credenciales automáticamente.
-        </p>
-      </div>
-
+<section id="servicios" class="container interactive">
+    <h2 class="section-title">SERVICIOS ACTIVOS</h2>
+    <div class="grid">
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> HOSTING WEB</h3>
+            <p>Infraestructura de alto rendimiento basada en <strong>Nginx y PHP-FPM</strong>. Soporte completo para Virtual Hosts, configuración SSL/TLS segura y optimización para la entrega rápida de contenido estático y dinámico.</p>
+        </div>
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> FTP SEGURO</h3>
+            <p>Servidor de transferencia de archivos <strong>vsftpd</strong> con encriptación FTPS explícita. Garantiza el aislamiento total de usuarios mediante jaulas chroot y gestión segura de permisos de directorio.</p>
+        </div>
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg> DNS INTERNO</h3>
+            <p>Resolución de nombres ultrarrápida mediante <strong>BIND9</strong>. Configuración personalizada de zonas directas e inversas para reducir la latencia en la red interna y eliminar dependencias externas.</p>
+        </div>
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg> BASE DE DATOS</h3>
+            <p>Motor <strong>MariaDB</strong> optimizado para transacciones ACID y alta concurrencia. Incluye gestión de usuarios granulares y conectividad segura para aplicaciones web y sistemas de gestión (CMS).</p>
+        </div>
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><path d="M21 16V8l-9-5l-9 5v8l9 5z"/></svg> DOCKER</h3>
+            <p>Arquitectura basada en contenedores para un despliegue ágil. Permite la ejecución de microservicios aislados, garantizando que el fallo de un servicio no comprometa la estabilidad del servidor.</p>
+        </div>
+        <div class="card">
+            <h3><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> PANEL ADMIN</h3>
+            <p>Interfaz de gestión centralizada. Monitoreo en tiempo real de recursos del sistema (CPU/RAM), visualización de logs de acceso y administración simplificada de cuentas de usuario.</p>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- ARQUITECTURA -->
-<section id="arquitectura" class="py-24 px-6">
-  <div class="max-w-6xl mx-auto text-center">
-
-    <h2 class="text-4xl md:text-5xl font-bold mb-10">
-      🧩 Arquitectura del Sistema
-    </h2>
-
-    <p class="text-xl text-gray-300 mb-12">
-      Nexorf Hosting funciona sobre una arquitectura modular,
-      pensada para ambientes de laboratorio, prácticas académicas
-      y redes empresariales internas.
-    </p>
-
-    <div class="bg-white/10 p-10 rounded-3xl border border-white/10 text-left text-lg leading-relaxed shadow-xl">
-      <ul class="space-y-4 list-disc list-inside">
-        <li><b>Nginx</b> como servidor web principal</li>
-        <li><b>PHP-FPM</b> para procesamiento dinámico</li>
-        <li><b>MariaDB</b> para almacenamiento de datos</li>
-        <li><b>vsftpd</b> para transferencia de archivos</li>
-        <li><b>BIND9</b> como servidor DNS interno</li>
-        <li><b>Docker Compose</b> para orquestación</li>
-      </ul>
+<section id="arquitectura" class="container interactive">
+    <h2 class="section-title">ARQUITECTURA DEL SISTEMA</h2>
+    <div class="arch-box">
+        <ul class="arch-list">
+            <li><div class="arch-dot"></div> <strong>Nginx:</strong> &nbsp; Servidor Web de alto rendimiento / Proxy Inverso.</li>
+            <li><div class="arch-dot"></div> <strong>PHP-FPM:</strong> &nbsp; Procesamiento Dinámico de Backend.</li>
+            <li><div class="arch-dot"></div> <strong>MariaDB:</strong> &nbsp; Motor de Base de Datos SQL Relacional.</li>
+            <li><div class="arch-dot"></div> <strong>vsftpd:</strong> &nbsp; Servidor FTP Seguro para transferencia.</li>
+            <li><div class="arch-dot"></div> <strong>BIND9:</strong> &nbsp; Servidor de Nombres (DNS) local.</li>
+            <li><div class="arch-dot"></div> <strong>Docker:</strong> &nbsp; Orquestación e Infraestructura de contenedores.</li>
+        </ul>
     </div>
-  </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="py-10 bg-black/40 text-center text-gray-400">
-  <p class="mb-2">
-    © 2026 <span class="text-white font-semibold">Nexorf Hosting</span>
-  </p>
-  <p class="text-sm">
-    Plataforma de hosting interno • Proyecto académico / empresarial
-  </p>
+<footer class="container">
+    <div class="footer-content">
+        <div class="footer-col">
+            <h4>CONTACTO Y SOPORTE</h4>
+            <p><svg class="ico" style="width:16px;" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> <a href="mailto:soporte@nexorf.com">soporte@nexorf.com</a></p>
+            <p><svg class="ico" style="width:16px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +34 900 123 456</p>
+        </div>
+        <div class="footer-col">
+            <h4>INFORMACIÓN</h4>
+            <p><svg class="ico" style="width:16px;" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> <a href="mailto:info@nexorf.com">info@nexorf.com</a></p>
+            <p><svg class="ico" style="width:16px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <a href="http://www.nexorf.com">www.nexorf.com</a></p>
+        </div>
+    </div>
+    <p>© 2026 NEXORF HOSTING | PLATAFORMA EDUCATIVA | ESTADO: OFFLINE</p>
 </footer>
 
+<script>
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = 120;
+
+    // Objeto para el mouse
+    let mouse = { x: null, y: null, radius: 150 };
+
+    window.addEventListener('mousemove', (event) => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+    });
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 1.0;
+            this.vy = (Math.random() - 0.5) * 1.0;
+            this.size = Math.random() * 2 + 1;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+            // Interacción: las partículas huyen suavemente del mouse
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < mouse.radius) {
+                if (mouse.x < this.x && this.x < canvas.width - 10) this.x += 1;
+                if (mouse.x > this.x && this.x > 10) this.x -= 1;
+                if (mouse.y < this.y && this.y < canvas.height - 10) this.y += 1;
+                if (mouse.y > this.y && this.y > 10) this.y -= 1;
+            }
+        }
+        draw() {
+            ctx.fillStyle = '#00d9ff';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particles = [];
+        for(let i=0; i<particleCount; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let i=0; i<particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            for(let j=i; j<particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                if(distance < 130) {
+                    ctx.strokeStyle = `rgba(0, 217, 255, ${1 - distance/130})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+    });
+
+    window.addEventListener('mouseout', () => {
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+</script>
 </body>
 </html>

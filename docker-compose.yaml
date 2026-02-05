@@ -66,10 +66,12 @@ services:
       - nexorf-net
 
   db:
-    image: mariadb:11
+    image: mariadb:12
     container_name: nexorf-db
     environment:
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
     volumes:
       - ./hosting/db:/var/lib/mysql
     restart: always
@@ -84,9 +86,10 @@ services:
       FTP_USER_NAME: admin
       FTP_USER_PASS: root
       FTP_USER_HOME: /home/ftpusers/admin
+      FTP_USER_UID: 1000
+      FTP_USER_GID: 1000
     volumes:
       - ./hosting/sites:/home/ftpusers
-      - ./ftp:/etc/pure-ftpd
     ports:
       - "21:21"
       - "30000-30009:30000-30009"
@@ -104,8 +107,6 @@ services:
     restart: always
     networks:
       - nexorf-net
-
-
 
 networks:
   nexorf-net:

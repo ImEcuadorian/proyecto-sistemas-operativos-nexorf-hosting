@@ -15,6 +15,10 @@ echo "🚀 Creando hosting para $USER"
 
 mkdir -p $BASE/$USER/public_html
 cp /scripts/default_index.html $BASE/$USER/public_html/index.html
+cp /scripts/nexorf_1.png $BASE/$USER/public_html/nexorf_1.png
+
+chown -R 1000:1000 /var/www/$USER
+chmod -R 755 /var/www/$USER
 
 cat > $NGINX/$DOMAIN.conf <<EOF
 server {
